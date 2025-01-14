@@ -1,0 +1,69 @@
+/* custom.css */
+.tab-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    background: transparent;
+    overflow: hidden; /* Tambahkan ini untuk menghindari elemen terpotong */
+}
+
+.tab-button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 1rem;
+    position: relative;
+    z-index: 1;
+    flex: 1; /* Tambahkan ini untuk membuat tombol menyesuaikan lebar */
+    text-align: center; /* Pastikan teks berada di tengah */
+}
+
+.tab-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: transparent;
+    z-index: -1;
+    transition: background-color 0.3s;
+}
+
+.tab-button.active::before {
+    background-color: #3b82f6; /* bg-blue-500 */
+    border-radius: 1rem;
+}
+
+.tab-background {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 50%;
+    background-color: #3b82f6; /* bg-blue-500 */
+    border-radius: 1rem;
+    transition: left 0.3s;
+}
+
+@media (max-width: 640px) {
+    .tab-container {
+        flex-direction: row; /* Pastikan flex direction tetap row */
+    }
+
+    .tab-button {
+        width: 50%; /* Pastikan tombol menempati 50% lebar */
+    }
+
+    .tab-background {
+        width: 50%; /* Sesuaikan latar belakang dengan lebar tombol */
+        left: 0;
+        top: 0; /* Pastikan posisi vertikal tetap di atas */
+    }
+
+    .tab-button.active ~ .tab-background {
+        left: 50%; /* Pindahkan latar belakang ke posisi tombol kedua */
+    }
+}
