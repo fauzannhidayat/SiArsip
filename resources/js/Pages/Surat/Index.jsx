@@ -6,10 +6,19 @@ import { useState } from 'react';
 
 export default function Index({ auth, surats, products, success }) {
     const [showModal, setShowModal] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
 
     const toggleModal = () => {
         setShowModal(!showModal);
     };
+
+    // Filtered surat list
+    const filteredSurats = surats.filter((surat) =>
+        surat.nomor_surat.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        surat.perihal.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        surat.pengirim.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        surat.jenis_surat.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
         <AuthenticatedLayout
@@ -31,10 +40,22 @@ export default function Index({ auth, surats, products, success }) {
                         {success}
                     </div>
                 )}
+
+                {/* Filter Input */}
+                <div className="mb-4">
+                    <input
+                        type="text"
+                        placeholder="Cari surat berdasarkan nomor, perihal, pengirim, atau jenis surat"
+                        className="w-full p-2 border rounded"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                </div>
+
                 <div className="overflow-x-auto">
                     <div className="hidden sm:block">
                         <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50 ">
+                            <thead className="bg-gray-50">
                                 <tr>
                                     <th scope="col" className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
                                         Tanggal Surat
@@ -59,71 +80,27 @@ export default function Index({ auth, surats, products, success }) {
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200  ">
-                            {surats.map((surat) => (
-            <tr key={surat.id}>
-              <td>{surat.tanggal_surat}</td>
-              <td>{surat.nomor_surat}</td>
-              <td>{surat.perihal}</td>
-              <td>{surat.pengirim}</td>
-              <td>{surat.jenis_surat}</td>
-              <td>
-                <a
-                  href={`/storage/${surat.file_surat}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Lihat Surat
-                </a>
-              </td>
-            </tr>
-          ))}
-                                {/* {products.data.map((product) => (
-                                    <tr key={product.id}>
-                                        <td className="px-2 py-3 text-gray-900  sm:px-4 sm:py-2 whitespace-nowrap text-sm">
-                                            {product.name}
-                                        </td>
-                                        <td className="px-2 py-3 text-gray-900  sm:px-4 sm:py-2 whitespace-nowrap text-wrap text-sm">
-                                            Beli: {product.price.buy_price} / Jual: {product.price.sell_price}
-                                        </td>
-                                        <td className="px-2 py-3 text-gray-900  sm:px-4 sm:py-2 whitespace-nowrap text-sm">
-                                            {product.stock ? product.stock.final_stock : 'N/A'}
-                                        </td>
-                                        <td className="px-3 py-2 text-gray-900  sm:px-4 sm:py-2 whitespace-nowrap text-sm">
-                                            <Link
-                                                href={route("product.show", product.id)}
-                                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
+                            <tbody className="bg-white divide-y divide-gray-200">
+                                {filteredSurats.map((surat) => (
+                                    <tr key={surat.id}>
+                                        <td>{surat.tanggal_surat}</td>
+                                        <td>{surat.nomor_surat}</td>
+                                        <td>{surat.perihal}</td>
+                                        <td>{surat.pengirim}</td>
+                                        <td>{surat.jenis_surat}</td>
+                                        <td>
+                                            <a
+                                                href={`/storage/${surat.file_surat}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
                                             >
-                                                Lihat Detail
-                                            </Link>
+                                                Lihat Surat
+                                            </a>
                                         </td>
                                     </tr>
-                                ))} */}
+                                ))}
                             </tbody>
                         </table>
-                    </div>
-                    <div className="block sm:hidden">
-                        {products.data.map((product) => (
-                            <div key={product.id} className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow mb-4">
-                                <div className="text-sm font-medium text-gray-900 dark:text-white">
-                                    {product.name}
-                                </div>
-                                <div className="text-sm text-gray-500 dark:text-gray-400">
-                                    Beli: {product.price.buy_price} / Jual: {product.price.sell_price}
-                                </div>
-                                <div className="text-sm text-gray-500 dark:text-gray-400">
-                                    Stok: {product.stock ? product.stock.final_stock : 'N/A'}
-                                </div>
-                                <div className="mt-2">
-                                    <Link
-                                        href={route("product.show", product.id)}
-                                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                    >
-                                        Lihat Detail
-                                    </Link>
-                                </div>
-                            </div>
-                        ))}
                     </div>
                 </div>
             </div>
@@ -131,7 +108,7 @@ export default function Index({ auth, surats, products, success }) {
             {/* Modal */}
             {showModal && (
                 <Modal show={showModal} onClose={toggleModal}>
-                    <TambahSuratForm onSuccess={toggleModal}/>
+                    <TambahSuratForm onSuccess={toggleModal} />
                 </Modal>
             )}
         </AuthenticatedLayout>
