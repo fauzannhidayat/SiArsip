@@ -1,36 +1,20 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import { useState } from 'react';
-import SellReport from './SellReport';
-import PurchaseReport from './PurchaseReport';
+import MasukReport from './MasukReport';
+import KeluarReport from './KeluarReport';
+import KeteranganReport from './KeteranganReport';
+import KeputusanReport from './KeputusanReport';
 import './custom.css';
 
-// Fungsi untuk mendapatkan tanggal dalam format YYYY-MM-DD
-const getTodayDate = () => {
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0'); // Bulan dimulai dari 0
-    const dd = String(today.getDate()).padStart(2, '0');
-    return `${yyyy}-${mm}-${dd}`;
-};
+export default function Index({ auth, sales, purchases, suratMasuk, suratKeterangan, suratKeputusan, suratKeluar, success }) {
+    const [reportType, setReportType] = useState('masuk');
 
-export default function Index({ auth, sales, purchases, success, startDate, endDate }) {
-    const [reportType, setReportType] = useState('sell');
-    const { data, setData, get } = useForm({
-        start_date: startDate || getTodayDate(),
-        end_date: endDate || getTodayDate(),
-    });
-
-    const handleFilter = (e) => {
-        e.preventDefault();
-        get(route('reports.index'), {
-            preserveState: true,
-            preserveScroll: true,
-            data: {
-                start_date: data.start_date,
-                end_date: data.end_date,
-            }
-        });
+    const reportComponents = {
+        masuk: <MasukReport suratMasuk={suratMasuk} />,
+        keluar: <KeluarReport suratKeluar={suratKeluar} />,
+        keterangan: <KeteranganReport suratKeterangan={suratKeterangan} />,
+        keputusan: <KeputusanReport suratKeputusan={suratKeputusan} />,
     };
 
     return (
@@ -53,50 +37,50 @@ export default function Index({ auth, sales, purchases, success, startDate, endD
                     </div>
                 )}
 
-                <div className="font-sm mb-2">
-                    <form onSubmit={handleFilter} className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
-                        <input
-                            type="date"
-                            value={data.start_date}
-                            onChange={e => setData('start_date', e.target.value)}
-                            className="border border-gray-300 rounded p-1 w-full sm:w-auto"
-                        />
-                        <input
-                            type="date"
-                            value={data.end_date}
-                            onChange={e => setData('end_date', e.target.value)}
-                            className="border border-gray-300 rounded p-1 w-full sm:w-auto"
-                        />
-                        <button
-                            type="submit"
-                            className="bg-blue-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-blue-600 w-full sm:w-auto"
-                        >
-                            Filter
-                        </button>
-                    </form>
-                </div>
-
-                <div className="tab-container relative flex mx-auto justify-center m-4 transparent">
+                {/* Tab Navigation */}
+                <div className="tab-container relative flex justify-center m-4 transparent">
                     <div
                         className="tab-background absolute top-0 bottom-0 bg-blue-500 rounded-2xl transition-all duration-300"
                         style={{
-                            left: reportType === 'sell' ? '0%' : '50%',
+                            left:
+                                reportType === 'masuk'
+                                    ? '0%'
+                                    : reportType === 'keluar'
+                                    ? '25%'
+                                    : reportType === 'keterangan'
+                                    ? '50%'
+                                    : '75%',
+                            width: '25%',
                         }}
                     ></div>
                     <button
-                        onClick={() => setReportType('sell')}
-                        className={`tab-button ${reportType === 'sell' ? 'active' : ''}`}
+                        onClick={() => setReportType('masuk')}
+                        className={`tab-button ${reportType === 'masuk' ? 'active' : ''}`}
                     >
                         Surat Masuk
                     </button>
                     <button
-                        onClick={() => setReportType('purchase')}
-                        className={`tab-button ${reportType === 'purchase' ? 'active' : ''}`}
+                        onClick={() => setReportType('keluar')}
+                        className={`tab-button ${reportType === 'keluar' ? 'active' : ''}`}
                     >
                         Surat Keluar
                     </button>
+                    <button
+                        onClick={() => setReportType('keterangan')}
+                        className={`tab-button ${reportType === 'keterangan' ? 'active' : ''}`}
+                    >
+                        Surat Keterangan
+                    </button>
+                    <button
+                        onClick={() => setReportType('keputusan')}
+                        className={`tab-button ${reportType === 'keputusan' ? 'active' : ''}`}
+                    >
+                        Surat Keputusan
+                    </button>
                 </div>
-                {reportType === 'sell' ? <SellReport sales={sales} /> : <PurchaseReport purchases={purchases} />}
+
+                {/* Report Content */}
+                <div>{reportComponents[reportType]}</div>
             </div>
         </AuthenticatedLayout>
     );

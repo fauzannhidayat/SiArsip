@@ -16,14 +16,11 @@ class SuratController extends Controller
      */
     public function index()
     {
-        $surats = Surat::all();
-        $products = Product::with(['price', 'stock' => function ($query) {
+        $surats = Surat::orderBy('created_at', 'desc')->get();
 
-            $query->latest(); // Mengambil stok terbaru
-        }])->get();
 
         return inertia("Surat/Index", [
-            "products" => ProductResource::collection($products),
+
             "surats" => $surats,
             'success' => session('success'),
         ]);
@@ -42,7 +39,7 @@ class SuratController extends Controller
      */
     public function store(StoreSuratRequest $request)
     {
-        
+
         $data = $request->validated(); // Validasi data request
         if ($request->hasFile('file_surat')) {
             $file = $request->file('file_surat');

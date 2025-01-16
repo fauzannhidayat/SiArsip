@@ -15,7 +15,7 @@ export default function TambahSuratForm({ onSuccess }) {
         perihal: '',
         pengirim: '',
         jenis_surat: '',
-        file_surat: null,
+        file_surat: '',
     });
 
     const submit = (e) => {
@@ -39,6 +39,25 @@ export default function TambahSuratForm({ onSuccess }) {
 
             <h2 className='text-center text-white'>Tambah Surat</h2>
             <form onSubmit={submit}>
+            <div>
+                    <InputLabel htmlFor="jenis_Surat" value="Jenis Surat" />
+
+                    <SelectInput
+                    name="jenis_surat"
+                    id="jenis_Surat"
+                    className="mt-1 block w-full"
+                    onChange={(e) => setData("jenis_surat", e.target.value)}
+                    >
+                    <option value="">Pilih Jenis Surat</option>
+                    <option value="masuk">Masuk</option>
+                    <option value="keluar">Keluar</option>
+                    <option value="keterangan">Keterangan</option>
+                    <option value="keputusan">Keputusan</option>
+                    </SelectInput>
+
+                    <InputError message={errors.jenis_Surat} className="mt-2" />
+                </div>
+
                 <div>
                     <InputLabel htmlFor="tanggal_surat" value="Tanggal Surat" />
                     <TextInput
@@ -99,23 +118,6 @@ export default function TambahSuratForm({ onSuccess }) {
                     <InputError message={errors.file_surat} className="mt-2" />
                 </div>
 
-                <div>
-                    <InputLabel htmlFor="jenis_Surat" value="Jenis Surat" />
-
-                    <SelectInput
-                    name="jenis_surat"
-                    id="jenis_Surat"
-                    className="mt-1 block w-full"
-                    onChange={(e) => setData("jenis_surat", e.target.value)}
-                    >
-                    <option value="">Pilih Jenis Surat</option>
-                    <option value="masuk">Masuk</option>
-                    <option value="keluar">Keluar</option>
-                    <option value="keterangan">Keterangan</option>
-                    </SelectInput>
-
-                    <InputError message={errors.jenis_Surat} className="mt-2" />
-                </div>
                 <div className="flex items-center justify-end mt-4">
                     <PrimaryButton className="ms-4" disabled={processing}>
                     {processing ? "Menyimpan..." : "Simpan"}

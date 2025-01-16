@@ -31,12 +31,7 @@ export default function AuthenticatedLayout({ user, header, children }) {
                     <NavLink href={route('reports.index')} active={activeNavItem === 'report'} onClick={() => handleNavItemClick('report')}>
                         Rekap Surat 
                     </NavLink>
-                    <NavLink href={route('sell.index')} active={activeNavItem === 'sell'} onClick={() => handleNavItemClick('sell')}>
-                        Surat Masuk
-                    </NavLink>
-                    <NavLink href={route('product.index')} active={activeNavItem === 'product'} onClick={() => handleNavItemClick('product')}>
-                        Tambah Surat
-                    </NavLink>
+                    
                     <NavLink href={route('surat.index')} active={activeNavItem === 'surat'} onClick={() => handleNavItemClick('surat')}>
                         Tambah Surat
                     </NavLink>

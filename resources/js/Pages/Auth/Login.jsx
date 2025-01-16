@@ -6,6 +6,7 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
+import LoginLogo from '../../../gambar/Login-Logo.png';
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -33,15 +34,9 @@ export default function Login({ status, canResetPassword }) {
     {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
 
     <form onSubmit={submit}>
-        <div className="flex flex-row justify-between">
-            <h2 className=""></h2>
-            <h2 className="text-center text-white bg-indigo-600 p-3 rounded-lg shadow-md">
-                Login Admin
-            </h2>
-            <h2 className=""></h2>
-        </div>
+        
 
-        <div className="mt-6">
+        <div className="">
             <InputLabel 
                 htmlFor="email" 
                 value="Email" 

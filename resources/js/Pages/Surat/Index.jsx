@@ -4,12 +4,23 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 import { useState } from 'react';
 
-export default function Index({ auth, surats, products, success }) {
+export default function Index({ auth, surats, success }) {
     const [showModal, setShowModal] = useState(false);
+    const [iframeUrl, setIframeUrl] = useState(""); // State untuk URL file surat
+    const [isIframeModalOpen, setIsIframeModalOpen] = useState(false); // State untuk modal iframe
     const [searchTerm, setSearchTerm] = useState("");
 
     const toggleModal = () => {
         setShowModal(!showModal);
+    };
+
+    const openIframeModal = (url) => {
+        setIframeUrl(url); // Set URL file surat
+        setIsIframeModalOpen(true); // Buka modal iframe
+    };
+
+    const closeIframeModal = () => {
+        setIsIframeModalOpen(false); // Tutup modal iframe
     };
 
     // Filtered surat list
@@ -75,9 +86,6 @@ export default function Index({ auth, surats, products, success }) {
                                     <th scope="col" className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
                                         Surat
                                     </th>
-                                    <th scope="col" className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
-                                        Aksi
-                                    </th>
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
@@ -87,15 +95,26 @@ export default function Index({ auth, surats, products, success }) {
                                         <td>{surat.nomor_surat}</td>
                                         <td>{surat.perihal}</td>
                                         <td>{surat.pengirim}</td>
-                                        <td>{surat.jenis_surat}</td>
+                                        <td className="py-2 flex justify-center">
+                                            <span className={
+                                                surat.jenis_surat === "masuk"
+                                                    ? "px-2 py-1 rounded bg-green-600 text-white"
+                                                    : surat.jenis_surat === "keluar"
+                                                        ? "px-2 py-1 rounded bg-red-700 text-white"
+                                                        :surat.jenis_surat === "keterangan"
+                                                            ? "px-2 py-1 rounded bg-yellow-600 text-white"
+                                                            : "px-2 py-1 rounded bg-blue-600 text-white"
+                                            }>
+                                                {surat.jenis_surat}
+                                            </span>
+                                        </td>
                                         <td>
-                                            <a
-                                                href={`/storage/${surat.file_surat}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
+                                            <button
+                                                className="text-blue-500 underline"
+                                                onClick={() => openIframeModal(`/storage/${surat.file_surat}`)}
                                             >
                                                 Lihat Surat
-                                            </a>
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}
@@ -105,10 +124,23 @@ export default function Index({ auth, surats, products, success }) {
                 </div>
             </div>
 
-            {/* Modal */}
+            {/* Modal Tambah Surat */}
             {showModal && (
                 <Modal show={showModal} onClose={toggleModal}>
                     <TambahSuratForm onSuccess={toggleModal} />
+                </Modal>
+            )}
+
+            {/* Modal Iframe */}
+            {isIframeModalOpen && (
+                <Modal show={isIframeModalOpen} onClose={closeIframeModal}>
+                    <iframe
+                        src={iframeUrl}
+                        width="100%"
+                        height="500px"
+                        style={{ border: "none" }}
+                        title="Surat Viewer"
+                    />
                 </Modal>
             )}
         </AuthenticatedLayout>
