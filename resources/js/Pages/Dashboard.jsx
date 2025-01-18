@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 
-export default function Dashboard({ auth, totalSales, profit, totalModal, totalProductsSold }) {
+export default function Dashboard({ auth, totalSurat, totalSuratMasuk, totalSuratKeluar, totalSuratKeterangan, totalSuratKeputusan }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -14,36 +14,44 @@ export default function Dashboard({ auth, totalSales, profit, totalModal, totalP
             <Head title="Dashboard" />
 
             <div className="py-12 bg-indigo-50 min-h-screen">
-                <div className="max-w-screen-xl mx-auto grid grid-cols-3 gap-6 px-8">
-                    {/* Total Penjualan */}
+                <div className="max-w-screen-xl mx-auto grid grid-cols-4 gap-3 px-8">
+                    {/* Total Surat Masuk */}
                     <div className="bg-white border-2 border-indigo-300 shadow-md rounded-xl flex flex-col items-center justify-center h-48">
-                        <p className="text-lg font-semibold text-indigo-700">Total Penjualan</p>
+                        <p className="text-lg font-semibold text-indigo-700">Total Surat Masuk</p>
                         <span className="text-3xl font-bold text-indigo-600">
-                            Rp. {totalSales.toLocaleString('id-ID')}
+                            {totalSuratMasuk}
                         </span>
                     </div>
 
-                    {/* Keuntungan */}
+                    {/* Jumlah Surat Keluar */}
                     <div className="bg-white border-2 border-indigo-300 shadow-md rounded-xl flex flex-col items-center justify-center h-48">
-                        <p className="text-lg font-semibold text-indigo-700">Keuntungan</p>
+                        <p className="text-lg font-semibold text-indigo-700">Jumlah Surat Keluar</p>
                         <span className="text-3xl font-bold text-indigo-600">
-                            Rp. {profit.toLocaleString('id-ID')}
+                            {totalSuratKeluar}
                         </span>
                     </div>
 
-                    {/* Modal */}
+                    {/* Jumlah Surat Keterangan */}
                     <div className="bg-white border-2 border-indigo-300 shadow-md rounded-xl flex flex-col items-center justify-center h-48">
-                        <p className="text-lg font-semibold text-indigo-700">Modal</p>
+                        <p className="text-lg font-semibold text-indigo-700">Jumlah Surat Keterangan</p>
                         <span className="text-3xl font-bold text-indigo-600">
-                            Rp. {totalModal.toLocaleString('id-ID')}
+                            {totalSuratKeterangan}
+                        </span>
+
+                    </div>
+                    {/* Jumlah Surat Keputusan */}
+                    <div className="bg-white border-2 border-indigo-300 shadow-md rounded-xl flex flex-col items-center justify-center h-48">
+                        <p className="text-lg font-semibold text-indigo-700">Jumlah Surat Keputusan</p>
+                        <span className="text-3xl font-bold text-indigo-600">
+                            {totalSuratKeputusan}
                         </span>
                     </div>
 
-                    {/* Produk Terjual */}
-                    <div className="bg-white border-2 border-indigo-300 shadow-md rounded-xl flex flex-col items-center justify-center h-48 col-span-3">
-                        <p className="text-lg font-semibold text-indigo-700">Produk Terjual</p>
+                    {/* Total */}
+                    <div className="bg-white border-2 border-indigo-300 shadow-md rounded-xl flex flex-col items-center justify-center h-48 col-span-4">
+                        <p className="text-lg font-semibold text-indigo-700">Total Surat</p>
                         <span className="text-3xl font-bold text-indigo-600">
-                            {totalProductsSold} Produk
+                            {totalSurat} Surat
                         </span>
                     </div>
                 </div>

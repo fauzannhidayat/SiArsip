@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import NavLink from '@/Components/NavLink';
 import { Link } from '@inertiajs/react';
+import LoginLogo from '../../gambar/Login-Logo.png';
 
 export default function AuthenticatedLayout({ user, header, children }) {
     const [activeNavItem, setActiveNavItem] = useState(() => {
@@ -21,7 +22,8 @@ export default function AuthenticatedLayout({ user, header, children }) {
         <div className="min-h-screen flex">
             {/* Sidebar */}
             <aside className="w-64 bg-gray-800 text-white fixed h-screen  ">
-                <div className="h-16 flex items-center justify-center bg-gray-900">
+                <div className="h-16 flex items-center justify-center gap-2 bg-gray-900">
+                    <img src={LoginLogo} alt="Logo" className="w-8 h-8" />
                     <h2 className="text-white">SiArsip</h2>
                 </div>
                 <nav className="flex-1 px-2 py-4 space-y-6 overflow-y-auto flex flex-col">
@@ -31,12 +33,7 @@ export default function AuthenticatedLayout({ user, header, children }) {
                     <NavLink href={route('reports.index')} active={activeNavItem === 'report'} onClick={() => handleNavItemClick('report')}>
                         Rekap Surat 
                     </NavLink>
-                    <NavLink href={route('sell.index')} active={activeNavItem === 'sell'} onClick={() => handleNavItemClick('sell')}>
-                        Surat Masuk
-                    </NavLink>
-                    <NavLink href={route('product.index')} active={activeNavItem === 'product'} onClick={() => handleNavItemClick('product')}>
-                        Tambah Surat
-                    </NavLink>
+                    
                     <NavLink href={route('surat.index')} active={activeNavItem === 'surat'} onClick={() => handleNavItemClick('surat')}>
                         Tambah Surat
                     </NavLink>

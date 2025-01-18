@@ -4,65 +4,48 @@ namespace App\Http\Controllers;
 
 use App\Models\Sell;
 use App\Models\Purchase;
+use App\Models\Surat;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SalesReportController extends Controller
 {
     public function index(Request $request)
     {
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
+        
+        // Fungsi untuk query data surat berdasarkan jenis
+        $getSuratByJenis = function ($jenis) {
+            $query = Surat::where('jenis_surat', $jenis);
 
-        $query = Sell::with('product');
 
-        if ($startDate && $endDate) {
-            if ($startDate === $endDate) {
-                $query->whereDate('created_at', $startDate);
-            } else {
-                $startDate2 = Carbon::parse($startDate)->subDay();
-                $endDate2 = Carbon::parse($endDate)->addDay();
-                $query->whereBetween('created_at', [$startDate2, $endDate2]);
-            }
-        }
+            return $query->orderBy('tanggal_surat', 'desc')->get()->map(function ($surat) {
+                return [
+                    'id' => $surat->id,
+                    'nomor_surat' => $surat->nomor_surat,
+                    'tanggal_surat' => $surat->tanggal_surat,
+                    'perihal' => $surat->perihal,
+                    'pengirim' => $surat->pengirim,
+                    'file_surat' => Storage::url($surat->file_surat)
+                ];
+            });
+        };
 
-        $sales = $query->orderBy('created_at', 'desc')->get()->map(function ($sell) {
-            return [
-                'id' => $sell->id,
-                'product_name' => $sell->product ? $sell->product->name : 'Unknown',
-                'quantity_sold' => $sell->quantity,
-                'total_price' => $sell->total_price,
-                'created_at' => $sell->created_at->format('Y-m-d'),
-            ];
-        });
+        // Ambil data surat berdasarkan jenis
+        $suratMasuk = $getSuratByJenis('masuk');
+        $suratKeluar = $getSuratByJenis('keluar');
+        $suratKeputusan = $getSuratByJenis('keputusan');
+        $suratKeterangan = $getSuratByJenis('keterangan');
 
-        $query = Purchase::with('product');
-        if ($startDate && $endDate) {
-            if ($startDate === $endDate) {
-                $query->whereDate('created_at', $startDate);
-            } else {
-                $startDate2 = Carbon::parse($startDate)->subDay();
-                $endDate2 = Carbon::parse($endDate)->addDay();
-                $query->whereBetween('created_at', [$startDate2, $endDate2]);
-            }
-        }
-        $purchases = $query->orderBy('created_at', 'desc')->get()->map(function ($purchase) {
-            return [
-                'id' => $purchase->id,
-                'product_name' => $purchase->product ? $purchase->product->name : 'Unknown',
-                'quantity_purchased' => $purchase->added_stock,
-                'total_buy_price' => $purchase->total_buy_price,
-                'created_at' => $purchase->created_at->format('Y-m-d'),
-            ];
-        });
+        
 
         return inertia('Report/Index', [
             'auth' => $request->user(),
-            'sales' => $sales,
-            'purchases' => $purchases,
             'success' => session('success'),
-            'startDate' => $startDate,
-            'endDate' => $endDate,
+            'suratMasuk' => $suratMasuk,
+            'suratKeluar' => $suratKeluar,
+            'suratKeputusan' => $suratKeputusan,
+            'suratKeterangan' => $suratKeterangan,
         ]);
     }
 }

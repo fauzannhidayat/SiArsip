@@ -7,24 +7,42 @@ import TextInput from '@/Components/TextInput';
 import { Head, useForm } from '@inertiajs/react';
 import SelectInput from './SelectInput';
 
-export default function TambahSuratForm({ onSuccess }) {
+export default function EditSuratForm({ onSuccess, surat }) {
     
     const { data, setData, post, processing, errors, reset } = useForm({
-        tanggal_surat: '',
-        nomor_surat: '',
-        perihal: '',
-        pengirim: '',
-        jenis_surat: '',
-        file_surat: '',
+        tanggal_surat: surat.tanggal_surat || "",
+        nomor_surat: surat.nomor_surat || "",
+        perihal: surat.perihal || "",
+        pengirim: surat.pengirim || "",
+        jenis_surat: surat.jenis_Surat || "",
+        file_surat: null,
+        _method: "PUT",
     });
 
     const submit = (e) => {
         e.preventDefault();
-        post(route('surat.store'), {
+
+        const formData = new FormData();
+        formData.append('tanggal_surat', data.tanggal_surat);
+        formData.append('nomor_surat', data.nomor_surat);
+        formData.append('perihal', data.perihal);
+        formData.append('pengirim', data.pengirim);
+        formData.append('jenis_surat', data.jenis_surat);
+        
+        formData.append('_method', 'PUT'); // Include the method override
+
+        if (data.file_surat) {
+            formData.append('file_surat', data.file_surat);
+        }
+
+        post(route('surat.update', surat.id), {
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
             onSuccess: () => {
+                reset();
                 onSuccess();
-                reset(); // Reset form setelah sukses
-                console.log("Data berhasil disimpan!");
             },
             onError: (errors) => {
                 console.error("Error:", errors);
@@ -34,10 +52,10 @@ export default function TambahSuratForm({ onSuccess }) {
 
     return (
         <>
-            <Head title="Tambah Surat" />
+            <Head title="Edit Surat" />
             <div className='p-3'>
 
-            <h2 className='text-center text-white'>Tambah Surat</h2>
+            <h2 className='text-center text-white'>Edit Surat</h2>
             <form onSubmit={submit}>
             <div>
                     <InputLabel htmlFor="jenis_Surat" value="Jenis Surat" />
@@ -46,9 +64,10 @@ export default function TambahSuratForm({ onSuccess }) {
                     name="jenis_surat"
                     id="jenis_Surat"
                     className="mt-1 block w-full"
+                    
                     onChange={(e) => setData("jenis_surat", e.target.value)}
                     >
-                    <option value="">Pilih Jenis Surat</option>
+                    <option value="">Pilih Jenis Surat Lagi</option>
                     <option value="masuk">Masuk</option>
                     <option value="keluar">Keluar</option>
                     <option value="keterangan">Keterangan</option>

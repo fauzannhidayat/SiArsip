@@ -4,29 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\Purchase;
 use App\Models\Sell;
+use App\Models\Surat;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // Total penjualan
-        $totalSales = Sell::sum('total_price');
-
-        // Total modal
-        $totalModal = Purchase::sum('total_buy_price');
-
-        // Keuntungan
-        $profit = $totalSales - $totalModal;
-
-        // Total produk terjual
-        $totalProductsSold = Sell::sum('quantity');
+        $totalSurat = Surat::all()->count();
+        // Jumlah surat berdasarkan jenis
+        $totalSuratMasuk = Surat::where('jenis_surat', 'masuk')->count();
+        $totalSuratKeluar = Surat::where('jenis_surat', 'keluar')->count();
+        $totalSuratKeterangan = Surat::where('jenis_surat', 'keterangan')->count();
+        $totalSuratKeputusan = Surat::where('jenis_surat', 'keputusan')->count();
 
         return inertia('Dashboard', [
-            'totalSales' => $totalSales,
-            'totalModal' => $totalModal,
-            'profit' => $profit,
-            'totalProductsSold' => $totalProductsSold,
+            'totalSurat'=> $totalSurat,
+            'totalSuratMasuk' => $totalSuratMasuk,
+            'totalSuratKeluar' => $totalSuratKeluar,
+            'totalSuratKeterangan' => $totalSuratKeterangan,
+            'totalSuratKeputusan' => $totalSuratKeputusan,
         ]);
     }
 }
