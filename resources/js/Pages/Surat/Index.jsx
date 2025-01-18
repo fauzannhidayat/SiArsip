@@ -1,17 +1,33 @@
+import EditSuratForm from '@/Components/EditSuratForm';
 import Modal from '@/Components/Modal';
 import TambahSuratForm from '@/Components/TambahSuratForm';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function Index({ auth, surats, success }) {
     const [showModal, setShowModal] = useState(false);
     const [iframeUrl, setIframeUrl] = useState(""); // State untuk URL file surat
+    
     const [isIframeModalOpen, setIsIframeModalOpen] = useState(false); // State untuk modal iframe
     const [searchTerm, setSearchTerm] = useState("");
 
+    const [editModalOpen, setEditModalOpen] = useState(false);
+    const [currentSurat, setCurrentSurat] = useState(null);
+
+
     const toggleModal = () => {
         setShowModal(!showModal);
+    };
+
+    const openEditModal = (surat) => {
+        setCurrentSurat(surat); // Set data surat yang akan diedit
+        setEditModalOpen(true); // Buka modal edit
+    };
+
+    const closeEditModal = () => {
+        setCurrentSurat(null); // Reset data surat
+        setEditModalOpen(false); // Tutup modal edit
     };
 
     const openIframeModal = (url) => {
@@ -20,7 +36,13 @@ export default function Index({ auth, surats, success }) {
     };
 
     const closeIframeModal = () => {
+        setIframeUrl("");  
         setIsIframeModalOpen(false); // Tutup modal iframe
+    };
+
+    const handleFileClick = (url) => {
+        setIframeUrl(url);
+        setIsIframeModalOpen(true);
     };
 
     // Filtered surat list
@@ -30,6 +52,13 @@ export default function Index({ auth, surats, success }) {
         surat.pengirim.toLowerCase().includes(searchTerm.toLowerCase()) ||
         surat.jenis_surat.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    const deleteProject = (surat) => {
+        if (!window.confirm("Apakah Anda Yakin ingin Menghapus Surat ini?")) {
+          return;
+        }
+        router.delete(route("surat.destroy", surat.id));
+      };
 
     return (
         <AuthenticatedLayout
@@ -65,36 +94,30 @@ export default function Index({ auth, surats, success }) {
 
                 <div className="overflow-x-auto">
                     <div className="hidden sm:block">
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
-                                <tr>
-                                    <th scope="col" className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
-                                        Tanggal Surat
-                                    </th>
-                                    <th scope="col" className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
-                                        Nomor Surat
-                                    </th>
-                                    <th scope="col" className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
-                                        Perihal
-                                    </th>
-                                    <th scope="col" className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
-                                        Pengirim
-                                    </th>
-                                    <th scope="col" className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
-                                        Jenis Surat
-                                    </th>
-                                    <th scope="col" className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
-                                        Surat
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
-                                {filteredSurats.map((surat) => (
-                                    <tr key={surat.id}>
-                                        <td>{surat.tanggal_surat}</td>
-                                        <td>{surat.nomor_surat}</td>
-                                        <td>{surat.perihal}</td>
-                                        <td>{surat.pengirim}</td>
+                    <table className="min-w-full divide-y divide-gray-200">  
+                            <thead className="bg-gray-50">  
+                                <tr>  
+                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">No</th>  
+                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Tanggal </th>  
+                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Tanggal Surat</th>  
+                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Nomor Surat</th>  
+                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Perihal</th>  
+                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Pengirim</th>  
+                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Jenis Surat</th>  
+                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Surat</th>  
+                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Aksi</th>  
+                                </tr>  
+                            </thead>  
+                            <tbody className="bg-white divide-y divide-gray-200">  
+                                {filteredSurats.map((surat, index) => (  
+                                    <tr key={surat.id}>  
+                                        <td>{index + 1}</td>  
+                                        <td>{new Date(surat.created_at).toLocaleDateString()}</td>  
+                                        <td>{surat.tanggal_surat}</td>  
+                                        <td>{surat.nomor_surat}</td>  
+                                        <td>{surat.perihal}</td>  
+                                        <td>{surat.pengirim}</td>  
+                                    
                                         <td className="py-2 flex justify-center">
                                             <span className={
                                                 surat.jenis_surat === "masuk"
@@ -107,42 +130,66 @@ export default function Index({ auth, surats, success }) {
                                             }>
                                                 {surat.jenis_surat}
                                             </span>
-                                        </td>
+                                        </td>  
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">  
+                                        <button onClick={() => handleFileClick(surat.file_surat)} className="text-indigo-600 hover:text-indigo-900">
+                                        Lihat File
+                                    </button>
+                                        </td>  
                                         <td>
-                                            <button
-                                                className="text-blue-500 underline"
-                                                onClick={() => openIframeModal(`/storage/${surat.file_surat}`)}
-                                            >
-                                                Lihat Surat
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                            <div className='text-sm flex gap-2'>
+                                            <button  onClick={() => openEditModal(surat)} className="font-medium text-yellow-600  hover:underline mx-1">
+                                            Edit
+                                        </button>
+                                                <button
+                                            onClick={(e) => deleteProject(surat)}
+                                            className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
+                                        >
+                                            Hapus
+                                        </button>
+                                            </div>
+                                            
+                                        </td> 
+                                    </tr>  
+                                ))}  
+                            </tbody>  
+                        </table> 
                     </div>
                 </div>
             </div>
 
             {/* Modal Tambah Surat */}
             {showModal && (
-                <Modal show={showModal} onClose={toggleModal}>
+                <Modal title={"Tambah Surat"} show={showModal} onClose={toggleModal}>
                     <TambahSuratForm onSuccess={toggleModal} />
                 </Modal>
             )}
 
             {/* Modal Iframe */}
             {isIframeModalOpen && (
-                <Modal show={isIframeModalOpen} onClose={closeIframeModal}>
-                    <iframe
-                        src={iframeUrl}
-                        width="100%"
-                        height="500px"
-                        style={{ border: "none" }}
-                        title="Surat Viewer"
-                    />
-                </Modal>
+                <Modal title={"Surat"} show={isIframeModalOpen} onClose={closeIframeModal}>
+                <div className="p-4">
+                <iframe src={iframeUrl} width="100%" height="500px"></iframe>
+                </div>
+                <div className="flex justify-end mt-4">
+                    <button
+                        onClick={closeIframeModal}
+                        className="bg-gray-500 text-white px-4 py-2 rounded"
+                    >
+                        Tutup
+                    </button>
+                </div>
+            </Modal>
             )}
+
+{editModalOpen && (
+    <Modal title="Edit Surat" show={editModalOpen} onClose={closeEditModal}>
+        <EditSuratForm
+            surat={currentSurat} // Data surat yang akan diedit
+            onSuccess={closeEditModal} // Callback setelah sukses edit
+        />
+    </Modal>
+)}
         </AuthenticatedLayout>
     );
 }
