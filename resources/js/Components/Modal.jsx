@@ -1,7 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 
-export default function Modal({ children, show = false, maxWidth = '2xl', closeable = true, onClose = () => {} }) {
+export default function Modal({ title, children, show = false, maxWidth = '2xl', closeable = true, onClose = () => {} }) {
     const close = () => {
         if (closeable) {
             onClose();
@@ -48,11 +48,9 @@ export default function Modal({ children, show = false, maxWidth = '2xl', closea
                     <Dialog.Panel
                         className={`mb-6 bg-white  rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto ${maxWidthClass}`}
                     >
-                        <div className="flex justify-between items-center p-4">
-                            <h3 className="text-lg font-semibold">Tambah Surat</h3>
-                            <button onClick={close} className="text-gray-500 hover:text-gray-700">X</button>
-                        </div>
-                        <div className="p-4">
+
+                        
+                        <div className="p-1">
                             {children}
                         </div>
                     </Dialog.Panel>

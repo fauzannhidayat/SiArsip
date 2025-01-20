@@ -6,6 +6,7 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
+import LoginLogo from '../../../gambar/Login-Logo.png';
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -33,15 +34,9 @@ export default function Login({ status, canResetPassword }) {
     {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
 
     <form onSubmit={submit}>
-        <div className="flex flex-row justify-between">
-            <h2 className=""></h2>
-            <h2 className="text-center text-white bg-indigo-600 p-3 rounded-lg shadow-md">
-                Login Admin
-            </h2>
-            <h2 className=""></h2>
-        </div>
+        
 
-        <div className="mt-6">
+        <div className="">
             <InputLabel 
                 htmlFor="email" 
                 value="Email" 
@@ -96,12 +91,21 @@ export default function Login({ status, canResetPassword }) {
 
         <div className="flex items-center justify-end mt-6">
             {canResetPassword && (
-                <Link
+            <>
+            <Link
                     href={route('password.request')}
                     className="underline text-sm text-indigo-800 hover:text-indigo-600 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                     Forgot your password?
                 </Link>
+                <Link
+                href={route('register')}
+                className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] "
+            >
+                Register
+            </Link>
+            </>
+                
             )}
 
             <PrimaryButton
