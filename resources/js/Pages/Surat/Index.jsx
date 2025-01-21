@@ -48,6 +48,7 @@ export default function Index({ auth, surats, success }) {
     // Filtered surat list
     const filteredSurats = surats.filter((surat) =>
         surat.nomor_surat.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        surat.nomor_agenda.toLowerCase().includes(searchTerm.toLowerCase()) ||
         surat.perihal.toLowerCase().includes(searchTerm.toLowerCase()) ||
         surat.pengirim.toLowerCase().includes(searchTerm.toLowerCase()) ||
         surat.jenis_surat.toLowerCase().includes(searchTerm.toLowerCase())
@@ -68,7 +69,7 @@ export default function Index({ auth, surats, success }) {
                     <h2 className="font-semibold text-xl text-gray-800 leading-tight">
                         Tambah Surat
                     </h2>
-                    <button onClick={toggleModal} className="text-sm font-sm bg-green-600 rounded-lg p-1">Tambah</button>
+                    <button onClick={toggleModal} className="text-sm font-sm text-white bg-green-600 rounded-lg p-1">Tambah</button>
                 </div>
             }
         >
@@ -94,27 +95,29 @@ export default function Index({ auth, surats, success }) {
 
                 <div className="overflow-x-auto">
                     <div className="hidden sm:block">
-                    <table className="min-w-full divide-y divide-gray-200">  
+                    <table className="min-w-full divide-y divide-gray-200 ">  
                             <thead className="bg-gray-50">  
-                                <tr>  
-                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">No</th>  
-                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Tanggal </th>  
-                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Tanggal Surat</th>  
-                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Nomor Surat</th>  
-                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Perihal</th>  
-                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Pengirim</th>  
-                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Jenis Surat</th>  
-                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Surat</th>  
-                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Aksi</th>  
+                                <tr className=''>  
+                                    <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">No</th>  
+                                    <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Tanggal </th>  
+                                    <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Tanggal Surat</th>  
+                                    <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Nomor Surat</th> 
+                                    <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Nomor Agenda</th>   
+                                    <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Perihal</th>  
+                                    <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Pengirim</th>  
+                                    <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Jenis Surat</th>  
+                                    <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Surat</th>  
+                                    <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Aksi</th>  
                                 </tr>  
                             </thead>  
-                            <tbody className="bg-white divide-y divide-gray-200">  
+                            <tbody className="bg-white divide-y divide-gray-200 text-center">  
                                 {filteredSurats.map((surat, index) => (  
                                     <tr key={surat.id}>  
                                         <td>{index + 1}</td>  
                                         <td>{new Date(surat.created_at).toLocaleDateString()}</td>  
                                         <td>{surat.tanggal_surat}</td>  
-                                        <td>{surat.nomor_surat}</td>  
+                                        <td>{surat.nomor_surat}</td>
+                                        <td>{surat.nomor_agenda}</td>    
                                         <td>{surat.perihal}</td>  
                                         <td>{surat.pengirim}</td>  
                                     
