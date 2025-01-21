@@ -8,8 +8,8 @@ export default function AuthenticatedLayout({ user, header, children }) {
         const currentPath = window.location.pathname;
         if (currentPath.includes('report')) return 'report';
         if (currentPath.includes('sell')) return 'sell';
-        if (currentPath.includes('user')) return 'user';
-        if (currentPath.includes('product')) return 'product';
+        if (currentPath.includes('profil')) return 'profil';
+        // if (currentPath.includes('staff')) return 'staff';
         if (currentPath.includes('surat')) return 'surat';
         return 'dashboard';
     });
@@ -37,9 +37,12 @@ export default function AuthenticatedLayout({ user, header, children }) {
                     <NavLink href={route('surat.index')} active={activeNavItem === 'surat'} onClick={() => handleNavItemClick('surat')}>
                         Tambah Surat
                     </NavLink>
-                    <NavLink href={route('profile.edit')} active={activeNavItem === 'user'} onClick={() => handleNavItemClick('user')}>
-                        User
+                    <NavLink href={route('profile.edit')} active={activeNavItem === 'profil'} onClick={() => handleNavItemClick('profil')}>
+                        Profil
                     </NavLink>
+                    {/* <NavLink href={route('staff.index')} active={activeNavItem === 'staf'} onClick={() => handleNavItemClick('staf')}>
+                        Staf
+                    </NavLink> */}
                 </nav>
             </aside>
 
@@ -47,7 +50,7 @@ export default function AuthenticatedLayout({ user, header, children }) {
             <div className="flex-1 flex flex-col ml-64">
                 {header && (
                     <header className="bg-white shadow">
-                        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        <div className="max-w-5xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                             {header}
                         </div>
                     </header>

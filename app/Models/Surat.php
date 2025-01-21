@@ -12,6 +12,7 @@ class Surat extends Model
     // Kolom yang bisa diisi secara massal
     protected $fillable = [
         'nomor_surat',
+        'nomor_agenda',
         'perihal',
         'pengirim',
         'file_surat',

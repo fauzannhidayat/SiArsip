@@ -12,6 +12,7 @@ export default function EditSuratForm({ onSuccess, surat }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         tanggal_surat: surat.tanggal_surat || "",
         nomor_surat: surat.nomor_surat || "",
+        nomor_agenda: surat.nomor_agenda || "",
         perihal: surat.perihal || "",
         pengirim: surat.pengirim || "",
         jenis_surat: surat.jenis_Surat || "",
@@ -25,6 +26,7 @@ export default function EditSuratForm({ onSuccess, surat }) {
         const formData = new FormData();
         formData.append('tanggal_surat', data.tanggal_surat);
         formData.append('nomor_surat', data.nomor_surat);
+        formData.append('nomor_agenda', data.nomor_agenda);
         formData.append('perihal', data.perihal);
         formData.append('pengirim', data.pengirim);
         formData.append('jenis_surat', data.jenis_surat);
@@ -100,6 +102,18 @@ export default function EditSuratForm({ onSuccess, surat }) {
                         onChange={(e) => setData('nomor_surat', e.target.value)}
                     />
                     <InputError message={errors.nomor_surat} className="mt-2" />
+                </div>
+                <div>
+                    <InputLabel htmlFor="nomor_agenda" value="Nomor Agenda" />
+                    <TextInput
+                        id="nomor_agenda"
+                        type="text"
+                        name="nomor_agenda"
+                        value={data.nomor_agenda}
+                        className="mt-1 block w-full"
+                        onChange={(e) => setData('nomor_agenda', e.target.value)}
+                    />
+                    <InputError message={errors.nomor_agenda} className="mt-2" />
                 </div>
                 <div>
                     <InputLabel htmlFor="perihal" value="Perihal Surat" />

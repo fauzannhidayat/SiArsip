@@ -12,6 +12,7 @@ export default function TambahSuratForm({ onSuccess }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         tanggal_surat: '',
         nomor_surat: '',
+        nomor_agenda: '',
         perihal: '',
         pengirim: '',
         jenis_surat: '',
@@ -81,6 +82,18 @@ export default function TambahSuratForm({ onSuccess }) {
                         onChange={(e) => setData('nomor_surat', e.target.value)}
                     />
                     <InputError message={errors.nomor_surat} className="mt-2" />
+                </div>
+                <div>
+                    <InputLabel htmlFor="nomor_agenda" value="Nomor Agenda" />
+                    <TextInput
+                        id="nomor_agenda"
+                        type="text"
+                        name="nomor_agenda"
+                        value={data.nomor_agenda}
+                        className="mt-1 block w-full"
+                        onChange={(e) => setData('nomor_agenda', e.target.value)}
+                    />
+                    <InputError message={errors.nomor_agenda} className="mt-2" />
                 </div>
                 <div>
                     <InputLabel htmlFor="perihal" value="Perihal Surat" />

@@ -25,6 +25,7 @@ export default function KeteranganReport({ suratKeterangan }) {
                                         <tr className="bg-gray-200">
                                             <th className="border border-gray-300 px-4 py-2">Tanggal</th>
                                             <th className="border border-gray-300 px-4 py-2">Nomor Surat</th>
+                                            <th className="border border-gray-300 px-4 py-2">Nomor Agenda</th>
                                             <th className="border border-gray-300 px-4 py-2">Perihal</th>
                                             <th className="border border-gray-300 px-4 py-2">Pengirim</th>
                                             <th className="border border-gray-300 px-4 py-2">Surat</th>
@@ -35,6 +36,7 @@ export default function KeteranganReport({ suratKeterangan }) {
                                             <tr key={surat.id} className="hover:bg-gray-100">
                                                 <td className="border border-gray-300 px-4 py-2">{surat.tanggal_surat}</td>
                                                 <td className="border border-gray-300 px-4 py-2">{surat.nomor_surat}</td>
+                                                <td className="border border-gray-300 px-4 py-2">{surat.nomor_agenda}</td>
                                                 <td className="border border-gray-300 px-4 py-2">{surat.perihal}</td>
                                                 <td className="border border-gray-300 px-4 py-2">{surat.pengirim}</td>
                                                 <td className="border border-gray-300 px-4 py-2">

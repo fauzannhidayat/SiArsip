@@ -24,10 +24,11 @@ class StoreSuratRequest extends FormRequest
     {
         return [
             'tanggal_surat' => 'required|date',
-            'nomor_surat' => 'required|regex:/^[0-9A-Za-z\-]+$/|max:255',
+            'nomor_surat' => 'required|regex:/^[0-9A-Za-z\-\/]+$/|max:255',
+            'nomor_agenda' => 'required|regex:/^[0-9A-Za-z\-\/]+$/|max:255',
             'perihal' => 'required|string|max:255',
             'pengirim' => 'required|string|max:255',
-            'jenis_surat' => 'required|in:masuk,keluar,keterangan',
+            'jenis_surat' => 'required|in:masuk,keluar,keterangan,keputusan',
             'file_surat' => 'nullable|file|mimes:pdf,doc,docx',
         ];
     }

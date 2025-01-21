@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('surats', function (Blueprint $table) {
             $table->id();
             $table->string('nomor_surat')->unique(); // Nomor surat yang unik
+            $table->string('nomor_agenda')->unique(); // Nomor surat yang unik
             $table->string('perihal'); // Judul surat
             $table->string('pengirim'); // Pengirim surat
             $table->string('file_surat'); // Isi surat
