@@ -114,10 +114,19 @@ export default function Index({ auth, surats, success }) {
                                 {filteredSurats.map((surat, index) => (  
                                     <tr key={surat.id}>  
                                         <td>{index + 1}</td>  
-                                        <td>{new Date(surat.created_at).toLocaleDateString()}</td>  
-                                        <td>{surat.tanggal_surat}</td>  
-                                        <td>{surat.nomor_surat}</td>
-                                        <td>{surat.nomor_agenda}</td>    
+                                        <td>{surat.created_at_formatted}</td>  
+                                        <td>{surat.tanggal_surat_formatted}</td>  
+                                        <td>{surat.nomor_surat ? (
+                                            <p>{surat.nomor_surat}</p>
+                                        ):(
+                                            <span className="text-gray-500">-</span>
+                                        )}</td> 
+
+                                        <td>{surat.nomor_agenda ? (
+                                            <p>{surat.nomor_agenda}</p>
+                                        ):(
+                                            <span className="text-gray-500">-</span>
+                                        )}</td>    
                                         <td>{surat.perihal}</td>  
                                         <td>{surat.pengirim}</td>  
                                     
@@ -135,9 +144,13 @@ export default function Index({ auth, surats, success }) {
                                             </span>
                                         </td>  
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">  
-                                        <button onClick={() => handleFileClick(surat.file_surat)} className="text-indigo-600 hover:text-indigo-900">
-                                        Lihat File
-                                    </button>
+                                        {surat.file_surat ? (
+                                                <button onClick={() => handleFileClick(surat.file_surat)} className="text-indigo-600 hover:text-indigo-900">
+                                                    Lihat File
+                                                </button>
+                                            ) : (
+                                                <span className="text-gray-500">Tidak ada file</span>
+                                            )}
                                         </td>  
                                         <td>
                                             <div className='text-sm flex gap-2'>

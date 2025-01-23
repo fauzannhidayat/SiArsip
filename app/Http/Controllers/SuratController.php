@@ -7,6 +7,7 @@ use App\Http\Requests\StoreSuratRequest;
 use App\Http\Requests\UpdateSuratRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -21,6 +22,8 @@ class SuratController extends Controller
             if ($surat->file_surat) {
                 $surat->file_surat = Storage::url($surat->file_surat); // Pastikan file dapat diakses melalui URL
             }
+            $surat->created_at_formatted = Carbon::parse($surat->created_at)->translatedFormat('d F Y'); // Format tanggal
+            $surat->tanggal_surat_formatted = Carbon::parse($surat->tanggal_surat)->translatedFormat('d F Y'); // Format tanggal surat
             return $surat;
         });
 
@@ -47,10 +50,17 @@ class SuratController extends Controller
     {
 
         $data = $request->validated(); // Validasi data request
+
+        if ($data['jenis_surat'] === 'keluar') {
+            $data['created_at'] = null;
+        }
+
         if ($request->hasFile('file_surat')) {
             $file = $request->file('file_surat');
             $path = $file->store('file_surat', 'public'); // Simpan file di storage/public/surat_files
             $data['file_surat'] = $path; // Simpan path file di database
+        } else {
+            $data['file_surat'] = null; // Simpan null jika file tidak diunggah
         }
 
         // Simpan data ke database

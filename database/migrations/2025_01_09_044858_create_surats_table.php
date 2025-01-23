@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nomor_agenda')->unique(); // Nomor surat yang unik
             $table->string('perihal'); // Judul surat
             $table->string('pengirim'); // Pengirim surat
-            $table->string('file_surat'); // Isi surat
+            $table->string('file_surat')->default(null); // Isi surat
             $table->date('tanggal_surat'); // Tanggal surat
             $table->enum('jenis_surat', ['masuk', 'keluar', 'keterangan', 'keputusan']); // Jenis surat: masuk atau keluar
             $table->timestamps();
