@@ -17,6 +17,7 @@ export default function TambahSuratForm({ onSuccess }) {
         pengirim: '',
         jenis_surat: '',
         file_surat: '',
+        created_at: ''
     });
 
     const submit = (e) => {
@@ -59,6 +60,21 @@ export default function TambahSuratForm({ onSuccess }) {
                     <InputError message={errors.jenis_Surat} className="mt-2" />
                 </div>
 
+                {data.jenis_surat !== 'keluar' && (
+                    <div>
+                        <InputLabel htmlFor="tanggal_masuk" value="Tanggal Masuk" />
+                        <TextInput
+                            id="tanggal_masuk"
+                            type="date"
+                            name="created_at"
+                            value={data.created_at}
+                            className="mt-1 block w-full"
+                            onChange={(e) => setData('created_at', e.target.value)}
+                        />
+                        <InputError message={errors.created_at} className="mt-2" />
+                    </div>
+                )}
+
                 <div>
                     <InputLabel htmlFor="tanggal_surat" value="Tanggal Surat" />
                     <TextInput
@@ -83,7 +99,9 @@ export default function TambahSuratForm({ onSuccess }) {
                     />
                     <InputError message={errors.nomor_surat} className="mt-2" />
                 </div>
-                <div>
+
+                {data.jenis_surat !== 'keluar' && (
+                    <div>
                     <InputLabel htmlFor="nomor_agenda" value="Nomor Agenda" />
                     <TextInput
                         id="nomor_agenda"
@@ -95,6 +113,8 @@ export default function TambahSuratForm({ onSuccess }) {
                     />
                     <InputError message={errors.nomor_agenda} className="mt-2" />
                 </div>
+                )}
+                
                 <div>
                     <InputLabel htmlFor="perihal" value="Perihal Surat" />
                     <TextInput
