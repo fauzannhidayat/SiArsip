@@ -18,5 +18,7 @@ class Surat extends Model
         'file_surat',
         'tanggal_surat',
         'jenis_surat',
+        'created_at'
     ];
+    public $timestamps = false;
 }
