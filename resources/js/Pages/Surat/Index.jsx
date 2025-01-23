@@ -15,6 +15,13 @@ export default function Index({ auth, surats, success }) {
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [currentSurat, setCurrentSurat] = useState(null);
 
+    const [sortOrder, setSortOrder] = useState("asc"); // Default ascending
+
+    const handleSortByNomorAgenda = () => {
+        const newOrder = sortOrder === "asc" ? "desc" : "asc";
+        setSortOrder(newOrder);
+    };
+    
 
     const toggleModal = () => {
         setShowModal(!showModal);
@@ -48,11 +55,25 @@ export default function Index({ auth, surats, success }) {
     // Filtered surat list
     const filteredSurats = surats.filter((surat) =>
         surat.nomor_surat.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        surat.nomor_agenda.toLowerCase().includes(searchTerm.toLowerCase()) ||
         surat.perihal.toLowerCase().includes(searchTerm.toLowerCase()) ||
         surat.pengirim.toLowerCase().includes(searchTerm.toLowerCase()) ||
         surat.jenis_surat.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    const sortedSurats = filteredSurats.sort((a, b) => {
+        const aValue = a.nomor_agenda || null; // Jika null/undefined, tetap sebagai null
+    const bValue = b.nomor_agenda || null; // Jika null/undefined, tetap sebagai null
+
+    if (aValue === null && bValue === null) return 0; // Jika keduanya null, tidak ada perubahan
+    if (aValue === null) return 1; // Tempatkan null di bagian bawah
+    if (bValue === null) return -1; // Tempatkan null di bagian bawah
+
+        if (sortOrder === "asc") {
+        return aValue.localeCompare(bValue); // Urutan ascending untuk nilai non-null
+    } else {
+        return bValue.localeCompare(aValue); // Urutan descending untuk nilai non-null
+    }
+    });
 
     const deleteProject = (surat) => {
         if (!window.confirm("Apakah Anda Yakin ingin Menghapus Surat ini?")) {
@@ -102,7 +123,12 @@ export default function Index({ auth, surats, success }) {
                                     <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Tanggal </th>  
                                     <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Tanggal Surat</th>  
                                     <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Nomor Surat</th> 
-                                    <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Nomor Agenda</th>   
+                                    <th
+    onClick={handleSortByNomorAgenda}
+    className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+>
+    Nomor Agenda {sortOrder === "asc" ? "↑" : "↓"}
+</th>  
                                     <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Perihal</th>  
                                     <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Pengirim</th>  
                                     <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Jenis Surat</th>  
@@ -111,10 +137,17 @@ export default function Index({ auth, surats, success }) {
                                 </tr>  
                             </thead>  
                             <tbody className="bg-white divide-y divide-gray-200 text-center">  
-                                {filteredSurats.map((surat, index) => (  
+                                {sortedSurats.map((surat, index) => (
                                     <tr key={surat.id}>  
                                         <td>{index + 1}</td>  
+                                        {surat.jenis_surat === 'keluar' && (
+                                            <td>-</td>
+                                        )}
+
+                                        {surat.jenis_surat !== 'keluar' &&(
+
                                         <td>{surat.created_at_formatted}</td>  
+                                        )}
                                         <td>{surat.tanggal_surat_formatted}</td>  
                                         <td>{surat.nomor_surat ? (
                                             <p>{surat.nomor_surat}</p>
