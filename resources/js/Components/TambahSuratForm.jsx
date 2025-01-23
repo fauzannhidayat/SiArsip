@@ -21,6 +21,14 @@ export default function TambahSuratForm({ onSuccess }) {
     });
 
     const submit = (e) => {
+        // Pastikan tidak ada tanggal otomatis jika tidak diisi
+        if (data.tanggal_surat === '') {
+            delete data.tanggal_surat; // Menghapus tanggal_surat jika kosong
+        }
+        if (data.created_at === '') {
+            delete data.created_at; // Menghapus created_at jika kosong
+        }
+        
         e.preventDefault();
         post(route('surat.store'), {
             onSuccess: () => {

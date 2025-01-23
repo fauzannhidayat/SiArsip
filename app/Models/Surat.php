@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Surat extends Model
 {
+    public $timestamps = false;
     use HasFactory;
 
     // Kolom yang bisa diisi secara massal
@@ -20,5 +21,4 @@ class Surat extends Model
         'jenis_surat',
         'created_at'
     ];
-    public $timestamps = false;
 }

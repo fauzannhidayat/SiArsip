@@ -42,9 +42,14 @@ export default function KeputusanReport({ suratKeputusan }) {
                                 <td className="border border-gray-300 px-4 py-2">{surat.perihal}</td>
                                 <td className="border border-gray-300 px-4 py-2">{surat.pengirim}</td>
                                 <td className="border border-gray-300 px-4 py-2">
-                                    <button onClick={() => handleFileClick(surat.file_surat)} className="text-indigo-600 hover:text-indigo-900">
-                                        Lihat Surat
-                                    </button></td>
+                                {surat.file_surat ? (
+                                                <button onClick={() => handleFileClick(surat.file_surat)} className="text-indigo-600 hover:text-indigo-900">
+                                                    Lihat File
+                                                </button>
+                                            ) : (
+                                                <span className="text-gray-500">Tidak ada file</span>
+                                            )}
+                                </td>
                             </tr>
                         ))}
                     </tbody>

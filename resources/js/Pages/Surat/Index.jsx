@@ -54,10 +54,10 @@ export default function Index({ auth, surats, success }) {
 
     // Filtered surat list
     const filteredSurats = surats.filter((surat) =>
-        surat.nomor_surat.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        surat.perihal.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        surat.pengirim.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        surat.jenis_surat.toLowerCase().includes(searchTerm.toLowerCase())
+        surat.nomor_surat || "".toLowerCase().includes(searchTerm.toLowerCase()) ||
+        surat.perihal || "".toLowerCase().includes(searchTerm.toLowerCase()) ||
+        surat.pengirim || "".toLowerCase().includes(searchTerm.toLowerCase()) ||
+        surat.jenis_surat || "".toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const sortedSurats = filteredSurats.sort((a, b) => {

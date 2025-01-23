@@ -22,8 +22,13 @@ class SuratController extends Controller
             if ($surat->file_surat) {
                 $surat->file_surat = Storage::url($surat->file_surat); // Pastikan file dapat diakses melalui URL
             }
-            $surat->created_at_formatted = Carbon::parse($surat->created_at)->translatedFormat('d F Y'); // Format tanggal
-            $surat->tanggal_surat_formatted = Carbon::parse($surat->tanggal_surat)->translatedFormat('d F Y'); // Format tanggal surat
+            $surat->created_at_formatted = $surat->created_at 
+    ? Carbon::parse($surat->created_at)->translatedFormat('d F Y') 
+    : '-'; // Atau bisa menggunakan string lain yang sesuai
+
+$surat->tanggal_surat_formatted = $surat->tanggal_surat 
+    ? Carbon::parse($surat->tanggal_surat)->translatedFormat('d F Y') 
+    : '-'; // Atau bisa menggunakan string lain yang sesuai
             return $surat;
         });
 
@@ -48,13 +53,19 @@ class SuratController extends Controller
      */
     public function store(StoreSuratRequest $request)
     {
-
+        // Debugging: Memeriksa data yang diterima
         $data = $request->validated(); // Validasi data request
-
-        if ($data['jenis_surat'] === 'keluar') {
-            $data['created_at'] = null;
+        
+        // Cek jika tanggal_surat kosong, jangan set tanggal otomatis
+        if (empty($data['tanggal_surat'])) {
+            $data['tanggal_surat'] = null; // Jangan set tanggal otomatis jika kosong
         }
-
+        
+        // Cek jika created_at kosong, tetap biarkan null atau jangan set
+        if (empty($data['created_at'])) {
+            $data['created_at'] = null; // Tidak ada tanggal masuk jika kosong
+        }
+        
         if ($request->hasFile('file_surat')) {
             $file = $request->file('file_surat');
             $path = $file->store('file_surat', 'public'); // Simpan file di storage/public/surat_files
