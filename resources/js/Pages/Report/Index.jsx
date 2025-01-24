@@ -14,28 +14,28 @@ export default function Index({ auth, suratMasuk, suratKeterangan, suratKeputusa
   // Filter surat berdasarkan tipe laporan dan kata kunci pencarian
   const filteredData = {
     masuk: (suratMasuk || []).filter((surat) =>
-      (surat.nomor_surat || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (surat.nomor_agenda || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (surat.perihal || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (surat.pengirim || "").toLowerCase().includes(searchTerm.toLowerCase())
+      (surat.nomor_surat && surat.nomor_surat.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (surat.nomor_agenda && surat.nomor_agenda.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (surat.perihal && surat.perihal.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (surat.pengirim && surat.pengirim.toLowerCase().includes(searchTerm.toLowerCase()))
     ),
     keluar: (suratKeluar || []).filter((surat) =>
-      (surat.nomor_surat || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (surat.nomor_agenda || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (surat.perihal || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (surat.pengirim || "").toLowerCase().includes(searchTerm.toLowerCase())
+      (surat.nomor_surat && surat.nomor_surat.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (surat.nomor_agenda && surat.nomor_agenda.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (surat.perihal && surat.perihal.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (surat.pengirim && surat.pengirim.toLowerCase().includes(searchTerm.toLowerCase()))
     ),
     keterangan: (suratKeterangan || []).filter((surat) =>
-      (surat.nomor_surat || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (surat.nomor_agenda || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (surat.perihal || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (surat.pengirim || "").toLowerCase().includes(searchTerm.toLowerCase())
+      (surat.nomor_surat && surat.nomor_surat.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (surat.nomor_agenda && surat.nomor_agenda.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (surat.perihal && surat.perihal.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (surat.pengirim && surat.pengirim.toLowerCase().includes(searchTerm.toLowerCase()))
     ),
     keputusan: (suratKeputusan || []).filter((surat) =>
-      (surat.nomor_surat || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (surat.nomor_agenda || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (surat.perihal || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (surat.pengirim || "").toLowerCase().includes(searchTerm.toLowerCase())
+      (surat.nomor_surat && surat.nomor_surat.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (surat.nomor_agenda && surat.nomor_agenda.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (surat.perihal && surat.perihal.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (surat.pengirim && surat.pengirim.toLowerCase().includes(searchTerm.toLowerCase()))
     ),
   };
   

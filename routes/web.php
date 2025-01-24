@@ -20,10 +20,10 @@ Route::redirect('/', '/dashboard');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard.index');
-
     Route::get('/reports', [SalesReportController::class, 'index'])->name('reports.index');
     Route::resource('user', UserController::class);
     Route::resource('surat', SuratController::class);
+    Route::resource('staff', StaffController::class);
 });
 
 

@@ -54,12 +54,13 @@ export default function Index({ auth, surats, success }) {
 
     // Filtered surat list
     const filteredSurats = surats.filter((surat) =>
-        surat.nomor_surat || "".toLowerCase().includes(searchTerm.toLowerCase()) ||
-        surat.perihal || "".toLowerCase().includes(searchTerm.toLowerCase()) ||
-        surat.pengirim || "".toLowerCase().includes(searchTerm.toLowerCase()) ||
-        surat.jenis_surat || "".toLowerCase().includes(searchTerm.toLowerCase())
+        (surat.nomor_surat && surat.nomor_surat.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (surat.perihal && surat.perihal.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (surat.nomor_agenda && surat.nomor_agenda.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (surat.pengirim && surat.pengirim.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (surat.jenis_surat && surat.jenis_surat.toLowerCase().includes(searchTerm.toLowerCase()))
     );
-
+    
     const sortedSurats = filteredSurats.sort((a, b) => {
         const aValue = a.nomor_agenda || null; // Jika null/undefined, tetap sebagai null
     const bValue = b.nomor_agenda || null; // Jika null/undefined, tetap sebagai null
@@ -127,7 +128,7 @@ export default function Index({ auth, surats, success }) {
     onClick={handleSortByNomorAgenda}
     className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
 >
-    Nomor Agenda {sortOrder === "asc" ? "↑" : "↓"}
+    No Agenda {sortOrder === "asc" ? "↑" : "↓"}
 </th>  
                                     <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Perihal</th>  
                                     <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Pengirim</th>  
@@ -137,7 +138,7 @@ export default function Index({ auth, surats, success }) {
                                 </tr>  
                             </thead>  
                             <tbody className="bg-white divide-y divide-gray-200 text-center">  
-                                {sortedSurats.map((surat, index) => (
+                                {filteredSurats.map((surat, index) => (
                                     <tr key={surat.id}>  
                                         <td>{index + 1}</td>  
                                         {surat.jenis_surat === 'keluar' && (

@@ -7,12 +7,14 @@ export default function Dashboard({ auth, totalSurat, totalSuratMasuk, totalSura
             user={auth.user}
             header={
                 <h2 className="font-bold text-2xl text-indigo-700 leading-tight text-center">
-                    Dashboard
+                    Dashboard 
                 </h2>
+                
             }
         >
             <Head title="Dashboard" />
 
+        <h1 className='font-bold text-2xl'>Selamat datang, {auth.user.name}</h1>
             <div className="py-12 bg-indigo-50 min-h-screen">
                 <div className="max-w-screen-xl mx-auto grid grid-cols-4 gap-3 px-8">
                     {/* Total Surat Masuk */}

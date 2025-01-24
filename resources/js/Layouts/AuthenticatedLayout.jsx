@@ -1,53 +1,80 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import NavLink from '@/Components/NavLink';
-import { Link } from '@inertiajs/react';
 import LoginLogo from '../../gambar/Login-Logo.png';
 
 export default function AuthenticatedLayout({ user, header, children }) {
-    const [activeNavItem, setActiveNavItem] = useState(() => {
-        const currentPath = window.location.pathname;
-        if (currentPath.includes('report')) return 'report';
-        if (currentPath.includes('sell')) return 'sell';
-        if (currentPath.includes('profil')) return 'profil';
-        // if (currentPath.includes('staff')) return 'staff';
-        if (currentPath.includes('surat')) return 'surat';
-        return 'dashboard';
-    });
+    const [activeNavItem, setActiveNavItem] = useState('');
 
-    const handleNavItemClick = (item) => {
-        setActiveNavItem(item);
-    };
+    useEffect(() => {
+        // Tentukan menu aktif berdasarkan URL saat ini
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('reports')) setActiveNavItem('reports');
+        else if (currentPath.includes('profile')) setActiveNavItem('profile');
+        else if (currentPath.includes('staff')) setActiveNavItem('staff');
+        else if (currentPath.includes('surat')) setActiveNavItem('surat');
+        else setActiveNavItem('dashboard');
+    }, []);
 
     return (
         <div className="min-h-screen flex">
             {/* Sidebar */}
-            <aside className="w-64 bg-gray-800 text-white fixed h-screen  ">
+            <aside className="w-64 bg-gray-800 text-white fixed h-screen">
                 <div className="h-16 flex items-center justify-center gap-2 bg-gray-900">
                     <img src={LoginLogo} alt="Logo" className="w-8 h-8" />
                     <h2 className="text-white">SiArsip</h2>
                 </div>
                 <nav className="flex-1 px-2 py-4 space-y-6 overflow-y-auto flex flex-col">
-                    <NavLink href={route('dashboard.index')} active={activeNavItem === 'dashboard'} onClick={() => handleNavItemClick('dashboard')}>
+                    {/* Dashboard */}
+                    <NavLink
+                        href={route('dashboard.index')}
+                        active={activeNavItem === 'dashboard'}
+                    >
                         Dashboard
                     </NavLink>
-                    <NavLink href={route('reports.index')} active={activeNavItem === 'report'} onClick={() => handleNavItemClick('report')}>
-                        Rekap Surat 
-                    </NavLink>
+
+                    {/* Rekap Surat */}
                     
-                    <NavLink href={route('surat.index')} active={activeNavItem === 'surat'} onClick={() => handleNavItemClick('surat')}>
-                        Tambah Surat
+                    <NavLink
+                        href={route('reports.index')}
+                        active={activeNavItem === 'reports'}
+                    >
+                        Rekap Surat
                     </NavLink>
-                    <NavLink href={route('profile.edit')} active={activeNavItem === 'profil'} onClick={() => handleNavItemClick('profil')}>
+
+                    {/* Tambah Surat (Admin Only) */}
+                    {user?.role === 'admin' && (
+                        <NavLink
+                            href={route('surat.index')}
+                            active={activeNavItem === 'surat'}
+                        >
+                            Tambah Surat
+                        </NavLink>
+                        
+                    )}
+
+                    {/* Staff (Admin Only) */}
+                    {user?.role === 'admin' && (
+                        <NavLink
+                            href={route('staff.index')}
+                            active={activeNavItem === 'staff'}
+                        >
+                            Staff
+                        </NavLink>
+                    )}
+
+                    {/* Profil */}
+                    <NavLink
+                        href={route('profile.edit')}
+                        active={activeNavItem === 'profile'}
+                    >
                         Profil
                     </NavLink>
-                    {/* <NavLink href={route('staff.index')} active={activeNavItem === 'staf'} onClick={() => handleNavItemClick('staf')}>
-                        Staf
-                    </NavLink> */}
                 </nav>
             </aside>
 
             {/* Main content */}
             <div className="flex-1 flex flex-col ml-64">
+                {/* Header */}
                 {header && (
                     <header className="bg-white shadow">
                         <div className="max-w-5xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -55,9 +82,8 @@ export default function AuthenticatedLayout({ user, header, children }) {
                         </div>
                     </header>
                 )}
-                <main className="flex-1 bg-gray-100  p-6">
-                    {children}
-                </main>
+                {/* Children */}
+                <main className="flex-1 bg-gray-100 p-6">{children}</main>
             </div>
         </div>
     );

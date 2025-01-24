@@ -4,6 +4,13 @@ import React, { useState } from 'react';
 export default function MasukReport({ suratMasuk }) {
     const [iframeUrl, setIframeUrl] = useState(""); // State untuk URL file surat
     const [isIframeModalOpen, setIsIframeModalOpen] = useState(false);
+    const [sortOrder, setSortOrder] = useState("asc"); // Default ascending
+
+    const handleSortByNomorAgenda = () => {
+        const newOrder = sortOrder === "asc" ? "desc" : "asc";
+        setSortOrder(newOrder);
+    };
+
     const handleFileClick = (url) => {
         setIframeUrl(url);
         setIsIframeModalOpen(true);
@@ -12,6 +19,21 @@ export default function MasukReport({ suratMasuk }) {
         setIframeUrl("");  
         setIsIframeModalOpen(false); // Tutup modal iframe
     };
+
+    const sortedSurats = suratMasuk.sort((a, b) => {
+        const aValue = a.nomor_agenda || null; // Jika null/undefined, tetap sebagai null
+    const bValue = b.nomor_agenda || null; // Jika null/undefined, tetap sebagai null
+
+    if (aValue === null && bValue === null) return 0; // Jika keduanya null, tidak ada perubahan
+    if (aValue === null) return 1; // Tempatkan null di bagian bawah
+    if (bValue === null) return -1; // Tempatkan null di bagian bawah
+
+        if (sortOrder === "asc") {
+        return aValue.localeCompare(bValue); // Urutan ascending untuk nilai non-null
+    } else {
+        return bValue.localeCompare(aValue); // Urutan descending untuk nilai non-null
+    }
+    });
     return (
         <div className="p-4 overflow-x-auto">
             {suratMasuk.length === 0 ? (
@@ -24,7 +46,12 @@ export default function MasukReport({ suratMasuk }) {
                         <tr className="bg-gray-200">
                             <th className="border border-gray-300 px-4 py-2">Tanggal</th>
                             <th className="border border-gray-300 px-4 py-2">Nomor Surat</th>
-                            <th className="border border-gray-300 px-4 py-2">Nomor Agenda</th>
+                            <th
+    onClick={handleSortByNomorAgenda}
+    className="border border-gray-300 px-4 py-2 cursor-pointer"
+>
+    No Agenda {sortOrder === "asc" ? "↑" : "↓"}
+</th>  
                             <th className="border border-gray-300 px-4 py-2">Perihal</th>
                             <th className="border border-gray-300 px-4 py-2">Pengirim</th>
                             <th className="border border-gray-300 px-4 py-2">Surat</th>

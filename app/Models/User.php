@@ -10,8 +10,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
-    const ROLE_ADMIN = 'admin';
-    const ROLE_STAFF = 'staff';
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -22,7 +21,6 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'permission'
     ];
 
     /**
@@ -45,14 +43,4 @@ class User extends Authenticatable
         'password' => 'hashed',
         'role' => 'string',
     ];
-
-    public function isAdmin()
-    {
-        return $this->role === self::ROLE_ADMIN;
-    }
-
-    public function isStaff()
-    {
-        return $this->role === self::ROLE_STAFF;
-    }
 }

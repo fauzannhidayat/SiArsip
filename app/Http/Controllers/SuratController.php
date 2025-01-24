@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateSuratRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,6 +19,8 @@ class SuratController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
+
         $surats = Surat::orderBy('created_at', 'desc')->get()->map(function ($surat) {
             if ($surat->file_surat) {
                 $surat->file_surat = Storage::url($surat->file_surat); // Pastikan file dapat diakses melalui URL
@@ -34,7 +37,7 @@ $surat->tanggal_surat_formatted = $surat->tanggal_surat
 
 
         return inertia("Surat/Index", [
-
+            'userRole' => $user->role,
             "surats" => $surats,
             'success' => session('success'),
         ]);
