@@ -4,7 +4,8 @@ import LoginLogo from '../../gambar/Login-Logo.png';
 
 export default function AuthenticatedLayout({ user, header, children }) {
     const [activeNavItem, setActiveNavItem] = useState('');
-
+    console.log('User Role:', user?.role);
+    console.log('Active Nav:', activeNavItem);
     useEffect(() => {
         // Tentukan menu aktif berdasarkan URL saat ini
         const currentPath = window.location.pathname;
@@ -33,7 +34,6 @@ export default function AuthenticatedLayout({ user, header, children }) {
                     </NavLink>
 
                     {/* Rekap Surat */}
-                    
                     <NavLink
                         href={route('reports.index')}
                         active={activeNavItem === 'reports'}
