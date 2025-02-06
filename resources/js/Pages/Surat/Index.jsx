@@ -15,6 +15,13 @@ export default function Index({ auth, surats, success }) {
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [currentSurat, setCurrentSurat] = useState(null);
 
+    const [sortOrder, setSortOrder] = useState("asc"); // Default ascending
+
+    const handleSortByNomorAgenda = () => {
+        const newOrder = sortOrder === "asc" ? "desc" : "asc";
+        setSortOrder(newOrder);
+    };
+    
 
     const toggleModal = () => {
         setShowModal(!showModal);
@@ -47,11 +54,27 @@ export default function Index({ auth, surats, success }) {
 
     // Filtered surat list
     const filteredSurats = surats.filter((surat) =>
-        surat.nomor_surat.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        surat.perihal.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        surat.pengirim.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        surat.jenis_surat.toLowerCase().includes(searchTerm.toLowerCase())
+        (surat.nomor_surat && surat.nomor_surat.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (surat.perihal && surat.perihal.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (surat.nomor_agenda && surat.nomor_agenda.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (surat.pengirim && surat.pengirim.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (surat.jenis_surat && surat.jenis_surat.toLowerCase().includes(searchTerm.toLowerCase()))
     );
+    
+    const sortedSurats = filteredSurats.sort((a, b) => {
+        const aValue = a.nomor_agenda || null; // Jika null/undefined, tetap sebagai null
+    const bValue = b.nomor_agenda || null; // Jika null/undefined, tetap sebagai null
+
+    if (aValue === null && bValue === null) return 0; // Jika keduanya null, tidak ada perubahan
+    if (aValue === null) return 1; // Tempatkan null di bagian bawah
+    if (bValue === null) return -1; // Tempatkan null di bagian bawah
+
+        if (sortOrder === "asc") {
+        return aValue.localeCompare(bValue); // Urutan ascending untuk nilai non-null
+    } else {
+        return bValue.localeCompare(aValue); // Urutan descending untuk nilai non-null
+    }
+    });
 
     const deleteProject = (surat) => {
         if (!window.confirm("Apakah Anda Yakin ingin Menghapus Surat ini?")) {
@@ -68,7 +91,7 @@ export default function Index({ auth, surats, success }) {
                     <h2 className="font-semibold text-xl text-gray-800 leading-tight">
                         Tambah Surat
                     </h2>
-                    <button onClick={toggleModal} className="text-sm font-sm bg-green-600 rounded-lg p-1">Tambah</button>
+                    <button onClick={toggleModal} className="text-sm font-sm text-white bg-green-600 rounded-lg p-1">Tambah</button>
                 </div>
             }
         >
@@ -94,27 +117,50 @@ export default function Index({ auth, surats, success }) {
 
                 <div className="overflow-x-auto">
                     <div className="hidden sm:block">
-                    <table className="min-w-full divide-y divide-gray-200">  
+                    <table className="min-w-full divide-y divide-gray-200 ">  
                             <thead className="bg-gray-50">  
-                                <tr>  
-                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">No</th>  
-                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Tanggal </th>  
-                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Tanggal Surat</th>  
-                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Nomor Surat</th>  
-                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Perihal</th>  
-                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Pengirim</th>  
-                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Jenis Surat</th>  
-                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Surat</th>  
-                                    <th className="px-2 py-3 sm:px-4 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Aksi</th>  
+                                <tr className=''>  
+                                    <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">No</th>  
+                                    <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Tanggal </th>  
+                                    <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Tanggal Surat</th>  
+                                    <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Nomor Surat</th> 
+                                    <th
+    onClick={handleSortByNomorAgenda}
+    className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+>
+    No Agenda {sortOrder === "asc" ? "↑" : "↓"}
+</th>  
+                                    <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Perihal</th>  
+                                    <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Pengirim</th>  
+                                    <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Jenis Surat</th>  
+                                    <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Surat</th>  
+                                    <th className="px-2 py-3 sm:px-2 sm:py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Aksi</th>  
                                 </tr>  
                             </thead>  
-                            <tbody className="bg-white divide-y divide-gray-200">  
-                                {filteredSurats.map((surat, index) => (  
+                            <tbody className="bg-white divide-y divide-gray-200 text-center">  
+                                {filteredSurats.map((surat, index) => (
                                     <tr key={surat.id}>  
                                         <td>{index + 1}</td>  
-                                        <td>{new Date(surat.created_at).toLocaleDateString()}</td>  
-                                        <td>{surat.tanggal_surat}</td>  
-                                        <td>{surat.nomor_surat}</td>  
+                                        {surat.jenis_surat === 'keluar' && (
+                                            <td>-</td>
+                                        )}
+
+                                        {surat.jenis_surat !== 'keluar' &&(
+
+                                        <td>{surat.created_at_formatted}</td>  
+                                        )}
+                                        <td>{surat.tanggal_surat_formatted}</td>  
+                                        <td>{surat.nomor_surat ? (
+                                            <p>{surat.nomor_surat}</p>
+                                        ):(
+                                            <span className="text-gray-500">-</span>
+                                        )}</td> 
+
+                                        <td>{surat.nomor_agenda ? (
+                                            <p>{surat.nomor_agenda}</p>
+                                        ):(
+                                            <span className="text-gray-500">-</span>
+                                        )}</td>    
                                         <td>{surat.perihal}</td>  
                                         <td>{surat.pengirim}</td>  
                                     
@@ -132,9 +178,13 @@ export default function Index({ auth, surats, success }) {
                                             </span>
                                         </td>  
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">  
-                                        <button onClick={() => handleFileClick(surat.file_surat)} className="text-indigo-600 hover:text-indigo-900">
-                                        Lihat File
-                                    </button>
+                                        {surat.file_surat ? (
+                                                <button onClick={() => handleFileClick(surat.file_surat)} className="text-indigo-600 hover:text-indigo-900">
+                                                    Lihat File
+                                                </button>
+                                            ) : (
+                                                <span className="text-gray-500">Tidak ada file</span>
+                                            )}
                                         </td>  
                                         <td>
                                             <div className='text-sm flex gap-2'>

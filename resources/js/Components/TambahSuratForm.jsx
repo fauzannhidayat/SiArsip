@@ -12,13 +12,23 @@ export default function TambahSuratForm({ onSuccess }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         tanggal_surat: '',
         nomor_surat: '',
+        nomor_agenda: '',
         perihal: '',
         pengirim: '',
         jenis_surat: '',
         file_surat: '',
+        created_at: ''
     });
 
     const submit = (e) => {
+        // Pastikan tidak ada tanggal otomatis jika tidak diisi
+        if (data.tanggal_surat === '') {
+            delete data.tanggal_surat; // Menghapus tanggal_surat jika kosong
+        }
+        if (data.created_at === '') {
+            delete data.created_at; // Menghapus created_at jika kosong
+        }
+        
         e.preventDefault();
         post(route('surat.store'), {
             onSuccess: () => {
@@ -58,6 +68,21 @@ export default function TambahSuratForm({ onSuccess }) {
                     <InputError message={errors.jenis_Surat} className="mt-2" />
                 </div>
 
+                {data.jenis_surat !== 'keluar' && (
+                    <div>
+                        <InputLabel htmlFor="tanggal_masuk" value="Tanggal Masuk" />
+                        <TextInput
+                            id="tanggal_masuk"
+                            type="date"
+                            name="created_at"
+                            value={data.created_at}
+                            className="mt-1 block w-full"
+                            onChange={(e) => setData('created_at', e.target.value)}
+                        />
+                        <InputError message={errors.created_at} className="mt-2" />
+                    </div>
+                )}
+
                 <div>
                     <InputLabel htmlFor="tanggal_surat" value="Tanggal Surat" />
                     <TextInput
@@ -82,6 +107,22 @@ export default function TambahSuratForm({ onSuccess }) {
                     />
                     <InputError message={errors.nomor_surat} className="mt-2" />
                 </div>
+
+                {data.jenis_surat !== 'keluar' && (
+                    <div>
+                    <InputLabel htmlFor="nomor_agenda" value="Nomor Agenda" />
+                    <TextInput
+                        id="nomor_agenda"
+                        type="text"
+                        name="nomor_agenda"
+                        value={data.nomor_agenda}
+                        className="mt-1 block w-full"
+                        onChange={(e) => setData('nomor_agenda', e.target.value)}
+                    />
+                    <InputError message={errors.nomor_agenda} className="mt-2" />
+                </div>
+                )}
+                
                 <div>
                     <InputLabel htmlFor="perihal" value="Perihal Surat" />
                     <TextInput

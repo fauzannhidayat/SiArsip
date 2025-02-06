@@ -13,7 +13,7 @@ class SalesReportController extends Controller
 {
     public function index(Request $request)
     {
-        
+
         // Fungsi untuk query data surat berdasarkan jenis
         $getSuratByJenis = function ($jenis) {
             $query = Surat::where('jenis_surat', $jenis);
@@ -23,6 +23,7 @@ class SalesReportController extends Controller
                 return [
                     'id' => $surat->id,
                     'nomor_surat' => $surat->nomor_surat,
+                    'nomor_agenda' => $surat->nomor_agenda,
                     'tanggal_surat' => $surat->tanggal_surat,
                     'perihal' => $surat->perihal,
                     'pengirim' => $surat->pengirim,
@@ -37,8 +38,9 @@ class SalesReportController extends Controller
         $suratKeputusan = $getSuratByJenis('keputusan');
         $suratKeterangan = $getSuratByJenis('keterangan');
 
+
+
         return inertia('Report/Index', [
-            'auth' => $request->user(),
             'success' => session('success'),
             'suratMasuk' => $suratMasuk,
             'suratKeluar' => $suratKeluar,

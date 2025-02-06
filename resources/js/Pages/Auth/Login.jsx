@@ -37,24 +37,24 @@ export default function Login({ status, canResetPassword }) {
         
 
         <div className="">
-            <InputLabel 
-                htmlFor="email" 
-                value="Email" 
+        <InputLabel 
+                htmlFor="name" 
+                value="Userame" 
                 className="!text-indigo-800 font-bold" // Warna lebih cerah dan tegas
             />
 
             <TextInput
-                id="email"
-                type="email"
-                name="email"
-                value={data.email}
+                id="name"
+                type="name"
+                name="name"
+                value={data.name}
                 className="mt-1 block w-full px-4 py-2 border-2 border-indigo-300 bg-indigo-50 text-indigo-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm transition duration-300"
                 autoComplete="username"
                 isFocused={true}
-                onChange={(e) => setData('email', e.target.value)}
+                onChange={(e) => setData('name', e.target.value)}
             />
 
-            <InputError message={errors.email} className="mt-2 text-red-500" />
+            <InputError message={errors.name} className="mt-2 text-red-500" />
         </div>
 
         <div className="mt-4">
@@ -98,12 +98,7 @@ export default function Login({ status, canResetPassword }) {
                 >
                     Forgot your password?
                 </Link>
-                <Link
-                href={route('register')}
-                className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] "
-            >
-                Register
-            </Link>
+                
             </>
                 
             )}

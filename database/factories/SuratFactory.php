@@ -18,6 +18,7 @@ class SuratFactory extends Factory
     {
         return [
             'nomor_surat' => $this->faker->unique()->regexify('[A-Z]{3}/[0-9]{4}/[A-Z]{2}'), // Nomor surat unik dengan format
+            'nomor_agenda' => $this->faker->unique()->regexify('[A-Z]{3}/[0-9]{4}/[A-Z]{2}'), // Nomor surat unik dengan format
             'perihal' => $this->faker->sentence(3), // Perihal atau judul surat
             'pengirim' => $this->faker->name(), // Nama pengirim surat
             'file_surat' => $this->faker->word() . '.pdf', // Nama file surat (contoh: dokumen.pdf)

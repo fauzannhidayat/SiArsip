@@ -20,18 +20,18 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             'name' => 'Fauzan',
-            'email' => 'ade@example.com',
-            'password' => bcrypt('ade123'),
+            'email' => 'fauzan@example.com',
+            'password' => bcrypt('ozan1407'),
             'email_verified_at' => time()
         ]);
 
-        Project::factory()
-            ->count(30)
-            ->create();
+        User::create([
+            'name' => 'admin',
+            'email' => 'admin@example.com',
+            'password' => bcrypt('adminKoni'),
+            // 'role' => User::ROLE_ADMIN, // Gunakan konstanta untuk role
+        ]);
 
-        
-
-        $this->call(PriceStockSeeder::class);
         $this->call(SuratSeeder::class);
     }
 }
