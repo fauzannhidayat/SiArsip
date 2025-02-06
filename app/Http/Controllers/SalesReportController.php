@@ -37,8 +37,6 @@ class SalesReportController extends Controller
         $suratKeputusan = $getSuratByJenis('keputusan');
         $suratKeterangan = $getSuratByJenis('keterangan');
 
-        
-
         return inertia('Report/Index', [
             'auth' => $request->user(),
             'success' => session('success'),
