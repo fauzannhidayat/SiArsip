@@ -41,7 +41,7 @@ class SalesReportController extends Controller
 
 
         return inertia('Report/Index', [
-            
+
             'success' => session('success'),
             'suratMasuk' => $suratMasuk,
             'suratKeluar' => $suratKeluar,
