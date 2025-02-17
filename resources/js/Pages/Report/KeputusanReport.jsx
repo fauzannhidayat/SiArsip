@@ -53,7 +53,7 @@ const [sortOrder, setSortOrder] = useState("asc"); // Default ascending
     No Agenda {sortOrder === "asc" ? "↑" : "↓"}
 </th>  
                             <th className="border border-gray-300 px-4 py-2">Perihal</th>
-                            <th className="border border-gray-300 px-4 py-2">Pengirim</th>
+                            <th className="border border-gray-300 px-4 py-2">Penerima</th>
                             <th className="border border-gray-300 px-4 py-2">Surat</th>
                         </tr>
                     </thead>
