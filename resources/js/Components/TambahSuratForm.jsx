@@ -108,7 +108,7 @@ export default function TambahSuratForm({ onSuccess }) {
                     <InputError message={errors.nomor_surat} className="mt-2" />
                 </div>
 
-                {data.jenis_surat !== 'keluar' && (
+                
                     <div>
                     <InputLabel htmlFor="nomor_agenda" value="Nomor Agenda" />
                     <TextInput
@@ -121,7 +121,7 @@ export default function TambahSuratForm({ onSuccess }) {
                     />
                     <InputError message={errors.nomor_agenda} className="mt-2" />
                 </div>
-                )}
+            
                 
                 <div>
                     <InputLabel htmlFor="perihal" value="Perihal Surat" />

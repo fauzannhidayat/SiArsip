@@ -47,7 +47,7 @@ export default function EditSuratForm({ onSuccess, surat }) {
             },
         });
     };
-
+    const label = data.jenis_surat === 'keluar' || data.jenis_surat === 'keputusan' ? 'Penerima Surat' : 'Pengirim Surat';
     return (
         <>
             <Head title="Edit Surat" />
@@ -138,7 +138,7 @@ export default function EditSuratForm({ onSuccess, surat }) {
                     </div>
 
                     <div>
-                        <InputLabel htmlFor="pengirim" value="Pengirim Surat" />
+                        <InputLabel htmlFor="pengirim" value={label} />
                         <TextInput
                             id="pengirim"
                             type="text"
